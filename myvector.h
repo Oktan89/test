@@ -1,7 +1,7 @@
 #pragma once
 
 
-namespace OTUS
+namespace otus
 {
     template<typename T>
     class vector
@@ -12,6 +12,46 @@ namespace OTUS
         public:
 
         vector() : _data(nullptr), _size(0) {}
+        
+        vector(std::initializer_list<T> l)
+        {
+            _data = new T[l.size()]();
+           
+            std::size_t index = 0;
+            for(auto i = l.begin(); i != l.end(); ++i, ++index)
+            {
+                _data[index] = *i;
+            }
+            _size = l.size();
+        }
+
+        vector(const otus::vector<T>& other)
+        {
+            _data = new T[other._szie]();
+            _size = other._size;
+            for(std::size_t i = 0; i < _size; ++i)
+            {
+                _data[i] = other._data[i];
+            }
+        }
+
+        otus::vector<T>& operator=(const otus::vector<T>& other)
+        {
+            if(this == &other)
+                return *this;
+            
+            T* temp = _data;
+
+            delete[] _data;
+            _data = new T[other._size]();
+            _size = other._size;
+            for(std::size_t i = 0; i < _size; ++i)
+            {
+                _data[i] = other._data[i];
+            }
+            delete[] temp;
+            return *this;
+        }
 
         explicit vector(std::size_t size)
         {
@@ -34,6 +74,12 @@ namespace OTUS
             return _data[index];
         }
 
+        T& at(std::size_t index)
+        {
+            if(index > _size)
+                throw std::out_of_range("out of range: " + std::to_string(index) + " > " + "size vector " + std::to_string(_size));
+            return _data[index];
+        }
         std::size_t size() const noexcept
         {
             return _size;
@@ -47,8 +93,6 @@ namespace OTUS
         ~vector(){
             delete[] _data;    
         }
-
-        
 
     };
 }

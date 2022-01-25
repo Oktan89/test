@@ -4,11 +4,18 @@
 
 int main (int, char**)
 {
-    std::vector<int> vec(10);
-    OTUS::vector<std::string> vec2(10, "test");
-    //vec2[1] = 100;
-    std::cout << vec.size() << std::endl;
-    std::cout << vec2[1] << std::endl;
+    otus::vector<std::string> vec{"1", "2", "3", "4", "5", "6"};
 
+    std::cout << vec[1] << " " << vec.size()<< std::endl;
+    try
+    {
+        vec.at(6);
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+    
+    
     return 0;
 }
